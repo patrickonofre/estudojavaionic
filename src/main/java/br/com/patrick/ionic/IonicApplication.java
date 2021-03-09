@@ -92,9 +92,9 @@ public class IonicApplication implements CommandLineRunner{
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
 		
-		Cidade cid1 = new Cidade("Uberlandia", est1);
-		Cidade cid2 = new Cidade("São Paulo", est2);
-		Cidade cid3 = new Cidade("Campinas", est2);
+		Cidade cid1 = new Cidade(null, "Uberlandia", est1);
+		Cidade cid2 = new Cidade(null, "São Paulo", est2);
+		Cidade cid3 = new Cidade(null, "Campinas", est2);
 		
 		est1.getCidades().addAll(Arrays.asList(cid1));
 		est2.getCidades().addAll(Arrays.asList(cid2, cid3));
