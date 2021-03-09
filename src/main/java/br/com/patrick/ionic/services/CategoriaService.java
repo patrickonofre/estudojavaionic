@@ -1,10 +1,16 @@
 package br.com.patrick.ionic.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.patrick.ionic.domain.Categoria;
+import br.com.patrick.ionic.dto.CategoriaDTO;
 import br.com.patrick.ionic.repositories.CategoriaRepository;
 import br.com.patrick.ionic.services.exception.DataIntegrityException;
 import br.com.patrick.ionic.services.exception.ObjectNotFoundExeception;
@@ -18,6 +24,10 @@ public class CategoriaService {
 	public Categoria find(Integer id) {
 		return categoriaRepo.findById(id).orElseThrow(() -> new ObjectNotFoundExeception(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+	}
+	
+	public List<Categoria> findAll() {
+		return categoriaRepo.findAll();
 	}
 	
 	public Categoria insert(Categoria categoria) {
@@ -35,7 +45,15 @@ public class CategoriaService {
 			categoriaRepo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
-		}
-		
+		}	
+	}
+	
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return categoriaRepo.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
 	}
 }
